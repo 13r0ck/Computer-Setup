@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example:
+<misc_start
+	<WhatThisDoes>What is put in these tags will be run with the invoke-expression cmdlet</WhatThisDoes>
+	<EnvironmentVariables>Powershell environment variables are allowed. They must be in all caps, i.e. $ENV:USERPROFILE</EnvironmentVariables>
+	<MaxNumber>There is no max/min number of tags that can be put in this section. all will be run</MaxNumber>
+	<WhatIsThe SuccessMessage="This is the SuccessMessage">The success message is the message that is output to the console + transcript when the last command succeded</WhatIsThe>
+	<WhatIfIDontPutASuccessMessage>The name of the tag + the word succeded will be output to the console + transcipt.</WhatIfIDontPutASuccessMessage>
+	<WhatIfTheCommandFails>If the command fails the error will be output to the console + transcript</WhatIfTheCommandFails>
+</misc_start>
+<commands_to_execute>
+	<p1>  <- Yes, the p needs to be there for all of them, p1 through p<infinity>. Do not start with 0.
+		<program_name>This does not change the install process, just the cmd and log output, use this for your own house keeping</program_name>
+		<install_location>
+				This is the location of the installer. This accepts powershell environment variables, and wildcards. 
+				The vairables must be all caps i.e. $ENV:USERPROFILE , $ENV:WINDIR , $EMV:TEMP , and in the list of -> [Environment]::GetEnvironmentVariables() <- Run that in powershell to see the full list.
+				Example: The input will $ENV:USERPROFILE\Desktop\amnet_computer_setup\firefox\Firefox*.msi then try to exexute C:\Users\test\Desktop\amnet_computer_setup\firefox\Firefox Setup 68.0.1.msi
+				Wildcards are recomended as It will allow the config file to be version agnostic, and environment variables are cool.
+			</install_location>
+		<install_switch>The switch or switches needed to install. This will also accept powershell environment variables. Folowing the same syntax as the install_locationn</install_switch>
+		<wait_for_event>
+				 This is the message of the last event that the installer creates.
+				 You can be as specific as you would like, or as vauge, some examples are:
+					 "Windows Installer reconfigured the product. Product Name: Adobe Acrobat Reader DC. Product Version: 15.007.20033. Product Language: 1033. Manufacturer: Adobe Systems Incorporated. Reconfiguration success or error status: 0."
+					 "Windows Installer installed the product. Product Name: Adobe Acrobat Reader DC*"
+					 "Windows*Adobe*" or even "*A*"
+				 All of those will work. The first event that matches those parameters will return true and continue the script assuming the software was installed
+			</wait_for_event>
+		<wait_each_attempt>
+				This is the timeout in seconds between attempted install.
+				Example: If 120 the script will start the installer, and check every few milliseconds for the event listed above.
+						 After 120 seconds the script will try to run the installer again, and then wait another 120 seconds.
+						 The installer will only be run 3 times, before the script gives up and moves onto the next step.
+			</wait_each_attempt>
+	</p1>
+			The number of programs here i.e. p# is infinately expandable
+</commands_to_execute>
+<misc_end>
+	<WhatIsThis>This is the same as the misc_start, but at the end of the script</WhatIsThis>
+</misc_end>
+	<client_config>
+		<vpn>
+			** AS OF SCRIPT VERSION 1.2 ONLY L2TP is supported. **
+			<needed>Set to true or false depending on if you would like to setup and connect to the vpn</needed>
+			<authentication_method></authentication_method>																Use these values: Pap | Chap | MSChapv2 | Eap | MachineCertificate
+			<server_address>The IP of FQDN that the vpn is to connect to</server_address>
+			<connection_name>The name of the VPN</connection_name>
+			<preshared_key>This is the key for L2TP</preshared_key>
+			<encryption_level></encryption_level>																		NoEncryption | Optional | Required | Maximum | Custom
+			<tunnel_type></tunnel_type> 																				Tunnel_Type will use these values:  Pptp | L2tp | Sstp | Ikev2 | Automatic
+			<remember_credential></remember_credential>
+		</vpn>
+		<domain>
+			<needed>Set to true or false depending on if you would like to setup and connect to the domain</needed>
+			<domain_name>The name of the domain</domain_name>
+		</domain>
+	</client_config>
+ -->
+ <xml>
+	<commands_to_execute>
+		<misc_start>
+			<disable_sleep1 SuccessMessage="Disable Sleep 1/4 Succeded">c:\windows\system32\powercfg.exe -change -disk-timeout-ac 0</disable_sleep1>
+			<disable_sleep2 SuccessMessage="Disable Sleep 2/4 Succeded">c:\windows\system32\powercfg.exe -change -disk-timeout-dc 0</disable_sleep2>
+			<disable_sleep3 SuccessMessage="Disable Sleep 3/4 Succeded">c:\windows\system32\powercfg.exe -change -standby-timeout-ac 0</disable_sleep3>
+			<disable_sleep4 SuccessMessage="Disable Sleep 4/4 Succeded">c:\windows\system32\powercfg.exe -change -standby-timeout-dc 0</disable_sleep4>
+		</misc_start>
+		<programs_to_install>
+			<p1>
+				<program_name>Firefox</program_name>
+				<install_location>$ENV:USERPROFILE\Desktop\amnet_computer_setup\Installers\Firefox*.msi</install_location>
+				<install_switch>/passive</install_switch>
+				<wait_for_event>Windows Installer installed the product. Product Name: Mozilla Firefox*</wait_for_event>
+				<wait_each_attempt>120</wait_each_attempt>
+				<vpn_required>False</vpn_required>
+			</p1>
+			<p2>
+				<program_name>Adobe Reader</program_name>
+				<install_location>$ENV:USERPROFILE\Desktop\amnet_computer_setup\Installers\reader\A*.msi</install_location>
+				<install_switch>/passive</install_switch>
+				<wait_for_event>Windows Installer installed the product. Product Name: Adobe Acrobat Reader DC*</wait_for_event>
+				<wait_each_attempt>120</wait_each_attempt>
+				<vpn_required>False</vpn_required>
+			</p2>
+			<p3>
+				<program_name>Office 365</program_name>
+				<install_location>$ENV:USERPROFILE\Desktop\amnet_computer_setup\Installers\setup*.exe</install_location>
+				<install_switch></install_switch>
+				<wait_for_event>Product: Office 16 Click-to-Run Extensibility Component -- Configuration completed successfully*</wait_for_event>
+				<wait_each_attempt>1200</wait_each_attempt>
+				<vpn_required>False</vpn_required>
+			</p3>
+			<p4>
+				<program_name>Automate Agent</program_name>
+				<install_location>$ENV:USERPROFILE\Desktop\amnet_computer_setup\Installers\Agent*.msi</install_location>
+				<install_switch>/passive</install_switch>
+				<wait_for_event>Windows Installer installed the product. Product Name: ConnectWise Automate*</wait_for_event>
+				<wait_each_attempt>600</wait_each_attempt>
+				<vpn_required>False</vpn_required>
+			</p4>
+		</programs_to_install>
+		<misc_end>
+		</misc_end>
+	</commands_to_execute>
+	<client_config>
+		<vpn>
+			<authentication_method></authentication_method>
+			<server_address></server_address>
+			<connection_name></connection_name>
+			<preshared_key></preshared_key>
+			<encryption_level></encryption_level>
+			<tunnel_type></tunnel_type>
+			<remember_credential></remember_credential>
+		</vpn>
+		<domain>
+			<requires_vpn></requires_vpn>
+			<domain_name></domain_name>
+		</domain>
+	</client_config>
+</xml>
