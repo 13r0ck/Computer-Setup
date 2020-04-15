@@ -1,13 +1,13 @@
 # Windows Computer Setup Script
 ### A highly configurable Script to automate comptuer setups for MSPs and IT departments
 
-##Every restart
-* Check for PS6+
-* Close MS Edge, so that script is imediatly viable (Really only afffects first startup, but checks every time anyway)
-* Checks that smart.xml is in \Desktop\amnet_computer_setup\Config\smart.xml
-* Checks for Success Log.xml in $Global:LogLocation
-* Checks that the computer has internet access (via what the network addapter is reporting)
-* Starts/appends the global transcript. This is just a txt file of all that is printed to console
+* Every restart
+	* Check for PS6+
+	* Close MS Edge, so that script is imediatly viable (Really only afffects first startup, but checks every time anyway)
+	* Checks that smart.xml is in \Desktop\amnet_computer_setup\Config\smart.xml
+	* Checks for Success Log.xml in $Global:LogLocation
+	* Checks that the computer has internet access (via what the network addapter is reporting)
+	* Starts/appends the global transcript. This is just a txt file of all that is printed to console
 
 * Script Setup
 	* Disables UAC via reg edit, so script runs in future reboots.
