@@ -90,7 +90,7 @@ Below is the logic that the script goes through to setup a computer. Each sectio
 		* This likely means that the boot order was changed. Make sure that the drive that Windows is being installed on is the first in boot order. I(f the computer has the ability to select a one time boot instead. If it does not, then you are going to have to boot once, finish the windows install, then change the boot order so that the drive is first
 	* The script is stuck rebooting to windows and then the same section of the script!
 		* You can manually tell the script to skip a section by changing the \Log location (default is the desktop)\Log\Success Log.xml tag <Status script_status="In Progress"> to <Status script_status="Failed">, and that will tell the script to ignore that section after the next reboot. Then please create an issue here on github (Attach all files in the \Log location\Log) and I will look into the issue for you.
-	* The Command Prompt stops showing updates, the script basically stops?
-		* I am still looking into remediating this. Try clicking on the windows then pressing the enter key, the command prompt should update, and then continue with the script.
-	* The issue I am having is not here!
-		* Please create an issue here (On the issues tab) and provide me with both the transcript.txt and the "Success Log.xml" (usually \Desktop\Log)and I will see what I can do for you!
+* The Command Prompt stops showing updates, the script basically stops?
+	* I am still looking into remediating this. Try clicking on the windows then pressing the enter key, the command prompt should update, and then continue with the script.
+* The issue I am having is not here!
+	* Please create an issue here (On the issues tab) and provide me with both the transcript.txt and the "Success Log.xml" (usually \Desktop\Log)and I will see what I can do for you!
