@@ -46,6 +46,9 @@
 * Script Teardown
 	* Re-enables UAC via reg edit
 	* Diasables PSRemoting
+* Final Output
+	* There is one final output of the results of the script, successes/failues.
+	* The final outoput is colored cyan, which is difrrent from the other log outputs.
 
 ## Needs to be done manually
 * Login to domain admin account, and delete the local admin account
