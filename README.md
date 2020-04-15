@@ -54,3 +54,6 @@
 * Login to domain admin account, and delete the local admin account
 	* If there is not a domain/cannot connect then put a password on the local admin
 * Connect with screen connect to verify functionality
+
+## Notes for Windows Builds
+* This script uses an answerfile. Answer files require that the infstll meadia uses a install.wim. If the windos iso comes with an install.esd that mist be converted otherwise the answer file will not work.
