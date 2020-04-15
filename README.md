@@ -81,7 +81,7 @@ Below is the logic that the script goes through to setup a computer. Each sectio
 	* If you do not have the option to change the boot order for on single boot see the section below about boot loops.
 * The computer should then install Windows, and then complete all steps above.
 
-# Help verything is broken!
+# Help everything is broken!
 * Category
 	* Question
 		* Answer
