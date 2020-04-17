@@ -12,7 +12,7 @@ $trusted_psremoting_hosts = @("Not-Matts")
 function Install-ScriptWindowsUpdate {
         [CmdletBinding()]
         Param()
-        if (-not(Get-Module PSWindowsUpdate -All))
+        if (-not(Get-Module PSWindowsUpdate -ListAvailable))
             {   
                 Write-Verbose "Installing Powershell module PSWindowsUpdate"
                 Install-PackageProvider -Name "Nuget" -RequiredVersion "2.8.5.208" -Scope CurrentUser -Force
@@ -29,7 +29,7 @@ function Install-ScriptWindowsUpdate {
     }
     catch
     {
-        if (Get-module PSWindowsUpdate -all)
+        if (Get-module PSWindowsUpdate -ListAvailable)
         {
             return "Module Install Success, Update Failure" #unknown error. Report failure.
         }
@@ -59,7 +59,7 @@ function Install-ScriptWindowsUpdate {
 function Install-ScriptLenovoUpdate {
     [CmdletBinding()]
     Param()
-    if (-not(Get-Module LSUClient))
+    if (-not(Get-Module LSUClient -ListAvailable))
         {   
             Write-Verbose "Installing Powershell module LSUCLient"
             #Update_Log @("OEM_Updates","Status","In Progress") "Lenovo have begun installing. If this message is seen at the finish of the script, then Lenovo Updates have failed. Please install manually."
@@ -576,37 +576,6 @@ if (Test-Path "$Global:LogLocation\Success Log.xml") {
 "@
     $success_log.Save("$Global:LogLocation\Success Log.xml")
 }
-
-#The CMD gets stuck sometimes, this job presses enter once a minute so hopefully keep the cmd moving
-# This does not work as intentioned. Just ignore this.
-@"
-Start-Job -Name "Mr. Press Enter"  -ArgumentList $press_enter_in -ScriptBlock {
-    Param([System.Array]$press_enter_in)
-    Start-Transcript "$Global:LogLocation\mrpressenter.txt"
-    $wshell = New-Object -ComObject wscript.shell;
-    Add-Type
-    using System;
-    using System.Runtime.InteropServices;
-        public class UserWindows {
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
-}
-"@
-    Start-Sleep -s 5
-    while ($true)
-    {
-        $active_handle = [UserWindows]::GetForegroundWindow()            
-        $process = Get-Process | Where-Object {$_.MainWindowHandle -eq $activeHandle}
-        if ($process -in $press_enter_in)
-        {
-                "Active window is $process"
-                $wshell.SendKeys('~')
-                Start-Sleep -s 60
-        } 
-        "Active windows is: $process. Did not press enter"
-    }
-} | Out-Null
-
 
 #Wait for internet connection. This will be required each time.
 $wait_for_internet_access = Start-Job  {
